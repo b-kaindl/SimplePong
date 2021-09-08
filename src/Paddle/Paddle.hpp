@@ -18,8 +18,8 @@ class Paddle
 	public:
 
 		// Paddle Dimensions
-		static const int PADDLE_WIDTH = Global::SCREEN_WIDTH / 32;
-		static const int PADDLE_HEIGHT = Global::SCREEN_HEIGHT / 8;
+		static const int PADDLE_WIDTH = 20;
+		static const int PADDLE_HEIGHT = 200;
 
 		// Constructor
 		Paddle(int x, int y, SDL_Event* event = NULL );

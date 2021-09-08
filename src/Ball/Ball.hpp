@@ -13,8 +13,8 @@ class Ball
 	public:
 
 		// Ball Dimensions
-		static const int BALL_WIDTH = Global::SCREEN_WIDTH / 32;
-		static const int BALL_HEIGHT = Global::SCREEN_HEIGHT / 32;
+		static const int BALL_WIDTH =  20;
+		static const int BALL_HEIGHT = 20;
 		
 		//Constuctor - takes in starting position
 		Ball(int x = 0, int y = 0);
