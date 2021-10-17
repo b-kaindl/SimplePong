@@ -3,6 +3,8 @@
 #pragma once
 
 #include<SDL2/SDL.h>
+#include<math.h>
+#include<random>
 
 #include "Commons/Commons.hpp"
 #include "Collider/Collider.hpp"
@@ -17,7 +19,7 @@ class Ball
 		static const int BALL_HEIGHT = 20;
 		
 		//Constuctor - takes in starting position
-		Ball(int x = 0, int y = 0);
+		Ball(int x = Global::SCREEN_WIDTH/2, int y = Global::SCREEN_HEIGHT/2);
 
 		~Ball();
 
@@ -57,7 +59,7 @@ class Ball
 		float mVelX, mVelY;
 
 		// max velocity
-		const int BALL_VEL = 2;
+		const int BALL_VEL = 400;
 
 
 };

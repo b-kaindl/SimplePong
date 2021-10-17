@@ -59,13 +59,12 @@ void Timer::pause()
 
 void Timer::unpause()
 {
-	if( !mStarted & mPaused)
+	if( mStarted && mPaused)
 	{
 		// set pause flag to false
 		mPaused = false;
  
 		// set new start ticks 
-		mStarted = true;
 		mStartTicks = SDL_GetTicks() - mPausedTicks;
 
 		// reset paused ticks

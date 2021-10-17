@@ -96,7 +96,7 @@ void Paddle::trackBall(Ball& ball, float deltaTime)
 void Paddle::move(Ball& ball, float deltaTime) 
 {
     //check for bounds
-    mPosY += mVel;
+    mPosY += mVel*deltaTime;
 
     //simulate simple friction
     float friction = 5;

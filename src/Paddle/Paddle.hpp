@@ -60,10 +60,7 @@ class Paddle
 		SDL_Event* mE = NULL;
 
 		// max velocity
-		const int PADDLE_VEL = 3;
-
-
-
+		const int PADDLE_VEL = 300;
 
 };
 #endif

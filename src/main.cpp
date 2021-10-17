@@ -249,6 +249,8 @@ int main( int argc, char const *argv[] )
                     SDL_SetRenderDrawColor( Global::appRenderer, 255, 255, 255, 255 );
                     SDL_RenderClear( Global::appRenderer );
 
+                    // restart timer 
+                    gameTimer.start();
 
                     enemyPaddle.trackBall(ball, timeStep );
                     // render paddles
