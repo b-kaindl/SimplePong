@@ -5,9 +5,6 @@
 #include<SDL2/SDL.h>
 #include<math.h>
 #include<random>
-
-
-
 #include "Commons/Commons.hpp"
 #include "Collider/Collider.hpp"
 
