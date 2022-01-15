@@ -11,7 +11,7 @@ Collider::Collider(int x, int y, int w, int h)
 }
 	
 Collider::~Collider()
-{
+{ 
 	
 }
 
@@ -36,13 +36,13 @@ bool Collider::isColliding(SDL_Rect& otherRect)
     // if any of the axes is not touching
     
     // no overlap on x
-    if(leftSelf >= rightOther || rightSelf <= leftOther)
+    if(leftSelf > rightOther || rightSelf < leftOther)
     {
         isColliding = false;
     }
 
     // no overlap on y
-    if(upperSelf >= lowerOther || lowerSelf <= upperOther)
+    if(upperSelf > lowerOther || lowerSelf < upperOther)
     {
         isColliding = false;
     }

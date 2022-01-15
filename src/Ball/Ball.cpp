@@ -55,7 +55,7 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     
     if( isColliding )
     {
-        mPosX -= mVelX * deltaTime;
+        mPosX -= (int)(mVelX * deltaTime);
         
         if(abs(mVelX) <= BALL_VEL)
         {
@@ -71,7 +71,7 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     }
     else
     {
-        mPosX += mVelX * deltaTime;
+        mPosX += (int)(mVelX * deltaTime);
     }
     
     
@@ -93,8 +93,8 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
         logmsg << "Ball collision at x: " << mPosX << ", y: " << mPosY << ".\n";
         SDL_LogInfo(SDL_LOG_CATEGORY_TEST,logmsg.str().c_str());
         logmsg.flush();
-        mPosY -= mVelY * deltaTime;
         mVelY = -mVelY;
+        mPosY -= (mVelY * deltaTime);
         logmsg << "Setting Ball to x: " << mPosX << ", y: " << mPosY << ".\n";
         SDL_LogInfo(SDL_LOG_CATEGORY_TEST,logmsg.str().c_str());
         logmsg.flush();
@@ -103,7 +103,7 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     }
     else
     {
-        mPosY += mVelY*deltaTime;
+        mPosY += (int)(mVelY*deltaTime);
     }
     
 
