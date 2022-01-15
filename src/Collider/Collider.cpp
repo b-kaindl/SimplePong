@@ -55,7 +55,7 @@ bool Collider::isColliding(SDL_Rect& otherRect)
 void Collider::setCollisionRect(SDL_Rect& rect) 
 {
 
-    mCollisionRect = {rect.x, rect.y, rect.w + 1, rect.h + 1 };
+    mCollisionRect = {rect.x, rect.y, rect.w, rect.h };
     
 
 }
