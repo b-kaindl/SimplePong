@@ -89,16 +89,8 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
 
     if( isColliding )
     {
-        std::stringstream logmsg;
-        logmsg << "Ball collision at x: " << mPosX << ", y: " << mPosY << ".\n";
-        SDL_LogInfo(SDL_LOG_CATEGORY_TEST,logmsg.str().c_str());
-        logmsg.flush();
         mVelY = -mVelY;
-        mPosY -= (mVelY * deltaTime);
-        logmsg << "Setting Ball to x: " << mPosX << ", y: " << mPosY << ".\n";
-        SDL_LogInfo(SDL_LOG_CATEGORY_TEST,logmsg.str().c_str());
-        logmsg.flush();
-
+        mPosY += (int)(mVelY * deltaTime);
 
     }
     else
