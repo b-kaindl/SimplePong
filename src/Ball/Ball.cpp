@@ -55,7 +55,7 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     
     if( isColliding )
     {
-        mPosX -= mVelX * deltaTime;
+        mPosX -= (int)(mVelX * deltaTime);
         
         if(abs(mVelX) <= BALL_VEL)
         {
@@ -71,17 +71,17 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     }
     else
     {
-        mPosX += mVelX * deltaTime;
+        mPosX += (int)(mVelX * deltaTime);
     }
     
     
     // TODO: will later become lose condtion
-    if( mPosX < 0 )
+    if( mPosX <= 0 )
     {
        reset();
     }
     
-    if( mPosX > Global::SCREEN_WIDTH - mBallBody.w )  
+    if( mPosX >= Global::SCREEN_WIDTH + mBallBody.w )  
     {
         // set to max X and change direction
         reset();
@@ -89,12 +89,21 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
 
     if( isColliding )
     {
-        mPosY -= mVelY;
+        std::stringstream logmsg;
+        logmsg << "Ball collision at x: " << mPosX << ", y: " << mPosY << ".\n";
+        SDL_LogInfo(SDL_LOG_CATEGORY_TEST,logmsg.str().c_str());
+        logmsg.flush();
         mVelY = -mVelY;
+        mPosY -= (mVelY * deltaTime);
+        logmsg << "Setting Ball to x: " << mPosX << ", y: " << mPosY << ".\n";
+        SDL_LogInfo(SDL_LOG_CATEGORY_TEST,logmsg.str().c_str());
+        logmsg.flush();
+
+
     }
     else
     {
-        mPosY += mVelY*deltaTime;
+        mPosY += (int)(mVelY*deltaTime);
     }
     
 
