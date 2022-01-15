@@ -38,6 +38,8 @@ set( CXX_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/Ball/Ball.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Collider/Collider.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Timer/Timer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/TextField/TextField.cpp
+
 )
 
 # copy asset folder to target

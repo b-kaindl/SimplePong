@@ -3,7 +3,7 @@
 // Main function - will be run at program start
 
 
-// imports 
+// includes 
 
 #include<stdio.h>
 #include<string>
@@ -13,7 +13,7 @@
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL_ttf.h>
 
-// internal imports
+// internal includes
 #include "Commons/Commons.hpp"
 #include "Paddle/Paddle.hpp"
 #include "Ball/Ball.hpp"
