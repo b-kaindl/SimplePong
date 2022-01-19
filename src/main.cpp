@@ -26,8 +26,6 @@ bool loadResources();
 void close();
 SDL_Surface* loadTitleSurface( std::string text, SDL_Color fontColor, TTF_Font* font );
 
-// Font
-TTF_Font* gFont = NULL;
 
 // Target Surface
 SDL_Surface* gGameTitleSurface = NULL;
@@ -96,8 +94,8 @@ bool loadResources()
 {
     bool success = true;
 
-    gFont = TTF_OpenFont( "assets/ProcrastinatingPixie-WyVOO.ttf", 32 );
-    if( gFont == NULL )
+    Global::appFont = TTF_OpenFont( "assets/ProcrastinatingPixie-WyVOO.ttf", 32 );
+    if( Global::appFont == NULL )
     {
         // could not load font
         printf( "Font could not be loaded! Error: %s\n", TTF_GetError() );
@@ -107,7 +105,7 @@ bool loadResources()
     // load title surface
     std::string strTitle = "WELCOME TO KAIPONG!";
     SDL_Color titleColor = { 0, 0, 0, 0};
-    gGameTitleSurface = loadTitleSurface( strTitle, titleColor, gFont );
+    gGameTitleSurface = loadTitleSurface( strTitle, titleColor, Global::appFont );
     if (gGameTitleSurface == NULL)
     {
         printf( "Could not load surface for title!\n" );
@@ -141,8 +139,8 @@ void close()
     }
 
     // free font
-    TTF_CloseFont(gFont);
-    gFont = NULL;
+    TTF_CloseFont(Global::appFont);
+    Global::appFont = NULL;
 
     // Destroy window and renderer
     SDL_DestroyRenderer( Global::appRenderer );
@@ -162,7 +160,7 @@ SDL_Surface* loadTitleSurface(std::string text, SDL_Color fontColor, TTF_Font* f
     SDL_Texture* titleTexture = NULL;
     
     //Set up title surface and texture
-    SDL_Surface* titleSurface = TTF_RenderText_Solid( gFont, text.c_str(), fontColor );
+    SDL_Surface* titleSurface = TTF_RenderText_Solid( Global::appFont, text.c_str(), fontColor );
 
     // surface creation failed
     if ( titleSurface == NULL )
