@@ -41,6 +41,8 @@ class Ball
 		void reset();
 
 		SDL_Rect& getBallBody();
+
+		int* getCurrentScore();
 		
 
 	private:
@@ -57,8 +59,13 @@ class Ball
 		// current velocity
 		float mVelX, mVelY;
 
+		// current game score
+		int mCurrentScore [2] = {0,0};
+
+
 		// max velocity
 		const int BALL_VEL = 400;
+
 
 
 };

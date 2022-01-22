@@ -60,6 +60,8 @@ void TextField::draw()
 	screenRect.h = Global::SCREEN_HEIGHT;
 
 	SDL_RenderSetViewport(Global::appRenderer, &screenRect);
+	// SDL_ResrtV
+
 
 }
 

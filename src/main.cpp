@@ -7,6 +7,7 @@
 
 #include<stdio.h>
 #include<string>
+#include<sstream>
 
 // SDL2
 #include<SDL2/SDL.h>
@@ -18,6 +19,7 @@
 #include "Paddle/Paddle.hpp"
 #include "Ball/Ball.hpp"
 #include "Timer/Timer.hpp"
+#include "TextField/TextField.hpp"
 #include "Utils/TextFormat.hpp"
 
 
@@ -207,6 +209,23 @@ int main( int argc, char const *argv[] )
             // Ball
             Ball ball;
 
+            // set up text format for scores
+            std::string fontPath = "assets/ProcrastinatingPixie-WyVOO.ttf";
+            int fontSize = 24;
+            SDL_Color fontColor = { 0, 0, 0 }; 
+
+            TextFormat scoreFormat = {fontSize,fontPath,fontColor};
+
+            // Score Tiles
+            SDL_Rect leftCorner = {0, 0, Global::SCREEN_WIDTH / 16, Global::SCREEN_HEIGHT / 16};
+            SDL_Rect rightCorner = {Global::SCREEN_WIDTH - (Global::SCREEN_WIDTH / 16), 0, Global::SCREEN_WIDTH / 16, Global::SCREEN_HEIGHT / 16};
+            int gameScore [2] = {0,0};
+
+            // TODO: very ugly workaround
+            std::string initString = "0";
+            TextField leftScore = TextField(leftCorner, scoreFormat, initString);
+            TextField rightScore = TextField(rightCorner, scoreFormat, initString);
+
             int seed = SDL_GetTicks();
             srand(seed);    // set time-dependent seed everytime on call
 
@@ -236,13 +255,47 @@ int main( int argc, char const *argv[] )
                     // int titleHeight = gGameTitleSurface->h;
                     // SDL_Rect renderQuad = { Global::SCREEN_WIDTH / 2 - (titleWidth / 2), 0, titleWidth, titleHeight };
                     // render title>
+                    
+                    SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
 
                     // calculate time step in secs
                     float timeStep = gameTimer.getTicks() / 1000.0f;
 
+                    int* newScore;
+                    std::stringstream scoreText;
+
+                    // move game forward
                     ball.move(playerPaddle.getPaddleBody(), enemyPaddle.getPaddleBody(), timeStep);
                     playerPaddle.move(ball, timeStep);
                     enemyPaddle.move(ball, timeStep);
+                    
+                    // compare scores
+                    newScore = ball.getCurrentScore();
+                    if (*(newScore) != gameScore[0] )
+                    {
+                        std::string newDisplayText;
+
+                        gameScore[0] = *(newScore);
+
+                        scoreText.flush();
+                        scoreText << gameScore[0];
+                        leftScore.setText(scoreText.str());
+                    }
+
+                    if( *(newScore + 1 ) != gameScore[1] )
+                    {
+                        std::string newDisplayText;
+
+                        gameScore[1] = *(newScore + 1);
+
+                        scoreText.flush();
+                        scoreText << gameScore[1];
+                        rightScore.setText(scoreText.str());
+
+                    }
+                    
+
+
 
                     // clear screen
                     SDL_SetRenderDrawColor( Global::appRenderer, 255, 255, 255, 255 );
@@ -251,12 +304,15 @@ int main( int argc, char const *argv[] )
                     // restart timer 
                     gameTimer.start();
 
+
                     enemyPaddle.trackBall(ball, timeStep );
                     // render paddles
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     playerPaddle.draw();
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     enemyPaddle.draw();
+
+
 
                     // render ball
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
@@ -265,7 +321,13 @@ int main( int argc, char const *argv[] )
                     // render midline
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     SDL_RenderDrawLine( Global::appRenderer, Global::SCREEN_WIDTH / 2, 0, Global::SCREEN_WIDTH / 2, Global::SCREEN_HEIGHT );
+
+                    // draw score panels
+	                SDL_RenderSetViewport(Global::appRenderer, &leftCorner);
+                    leftScore.draw();
                     
+	                SDL_RenderSetViewport(Global::appRenderer, &rightCorner);
+                    rightScore.draw();
 
                     // Update screen
                     SDL_RenderPresent( Global::appRenderer );
