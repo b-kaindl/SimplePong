@@ -18,6 +18,7 @@
 #include "Paddle/Paddle.hpp"
 #include "Ball/Ball.hpp"
 #include "Timer/Timer.hpp"
+#include "Utils/TextFormat.hpp"
 
 
 // function prototypes for starting and managing app

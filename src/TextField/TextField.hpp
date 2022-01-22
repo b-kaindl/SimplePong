@@ -14,15 +14,7 @@
 
 // internal includes
 #include "Commons/Commons.hpp"
-
-// struct to hold formatting info for text
-struct TextFormat
-{
-	int fontSize;
-	TTF_Font* font;
-	SDL_Color color;
-
-};
+#include "Utils/TextFormat.hpp"
 	
 class TextField  
 {
@@ -46,14 +38,19 @@ class TextField
 		// format info
 		TextFormat mFormat;
 
+		// actual font used
+		TTF_Font* mFont;
+
 		// font asset retrieval
-		TTF_Font* loadFont( std::string path);
+		bool loadFont();
+
+		// load texture from text
+		bool loadTextTexture(std::string text);
 
 	public:
 
 		// constructor
-		TextField(SDL_Rect& fieldRect, std::string fontPath, 
-		TextFormat fieldFormat, std::string displayText="x");
+		TextField(SDL_Rect& fieldRect, TextFormat& fieldFormat, std::string displayText="x");
 
 		// destructor
 		~TextField();
@@ -62,6 +59,9 @@ class TextField
 		void draw();
 
 		void setText(std::string displayText);
+
+		// optional --> update method for format
+		
 
 };
 #endif
