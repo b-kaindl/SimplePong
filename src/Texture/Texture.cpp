@@ -25,12 +25,12 @@ Texture::~Texture()
 	free();
 }
 
-SDL_ Texture* Texture::loadTexture(TextFormat& formatInfo, std::string& displayText)
+SDL_Texture* Texture::loadTexture(TextFormat& formatInfo, std::string& displayText)
 {
     return NULL;
 }
 	
-SDL_ Texture* Texture::loadTexture(std::string& imagePath)
+SDL_Texture* Texture::loadTexture(std::string& imagePath)
 {
     SDL_Texture* newTexture = NULL;
 
