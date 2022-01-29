@@ -39,6 +39,8 @@ set( CXX_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/Collider/Collider.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Timer/Timer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/TextField/TextField.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/Texture/Texture.cpp
+
 
 )
 
