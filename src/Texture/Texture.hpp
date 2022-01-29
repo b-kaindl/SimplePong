@@ -10,13 +10,16 @@
 #include<string>
 
 #include "Commons/Commons.hpp"
-#include"Utils/TextFormat.hpp"
+#include "Utils/TextFormat.hpp"
+#include "Vectors/Vector2d/Vector2d.hpp"
 
 
 	
 class Texture  
 {
 	private:
+
+	Vector2D mPos;
 
 	int mWidth, mHeight;
 
@@ -35,20 +38,27 @@ class Texture
 	public:
 		
 		// initialize empty texture --> if texture is to be set via setters
-		Texture();
+		Texture(Vector2D& position);
 
 		// initialize texture from font info
-		Texture(TextFormat& formatInfo, std::string& displayText);
+		Texture(Vector2D& position, TextFormat& formatInfo, std::string& displayText);
 
 		// initializing from image
-		Texture(std::string& imagePath);
+		Texture(Vector2D& position, std::string& imagePath);
 
 		// destroy texture, surface and FontPointer = NULL
 		~Texture();
 
+		
+
 		SDL_Texture* loadTexture(TextFormat& formatInfo, std::string& displayText);
 		SDL_Texture* loadTexture(std::string& imagePath);
 
+		Vector2D getPosition();
+		int getWidth();
+		int getHeight();
+
+		
 		void render();
 
 

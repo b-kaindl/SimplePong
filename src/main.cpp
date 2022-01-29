@@ -21,6 +21,8 @@
 #include "Timer/Timer.hpp"
 #include "TextField/TextField.hpp"
 #include "Utils/TextFormat.hpp"
+#include "Vectors/Vector2d/Vector2d.hpp"
+
 
 
 // function prototypes for starting and managing app

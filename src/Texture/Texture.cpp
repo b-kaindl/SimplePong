@@ -1,20 +1,26 @@
 #include "Texture.hpp"  
 	
-Texture::Texture()
+Texture::Texture(Vector2D& position)
 {
-	
+	mPos = position;
+
 }
 
-Texture::Texture(TextFormat& formatInfo, std::string& displayText)
+Texture::Texture(Vector2D& position, TextFormat& formatInfo, std::string& displayText)
 {
+    mPos = position;
+
+
     mFormat = formatInfo;
     mLoadedFont = loadFont();
     mTexture = loadTexture(formatInfo,displayText);
 
 }
 
-Texture::Texture(std::string& imagePath)
+Texture::Texture(Vector2D& position, std::string& imagePath)
 {
+    
+    mPos = position;
     
     mTexture = loadTexture(imagePath);
     
@@ -92,21 +98,32 @@ SDL_Texture* Texture::loadTexture(std::string& imagePath)
     {
         std::string errormsg = "Texture could not be created.";
         SDL_LogCritical(SDL_LOG_PRIORITY_CRITICAL, errormsg.c_str());
-        return NULL;
+        newTexture = NULL;
 
     }
-    // Create new texture from surface pixels 
-    newTexture = SDL_CreateTextureFromSurface(Global::appRenderer, loadedSurface);
-    if(newTexture == NULL)
+    else
     {
-            std::string errormsg = "Texture could not be created.";
-            SDL_LogCritical(SDL_LOG_PRIORITY_CRITICAL, errormsg.c_str());
-            return NULL;
+        // Create new texture from surface pixels 
+        newTexture = SDL_CreateTextureFromSurface(Global::appRenderer, loadedSurface);
+        if(newTexture == NULL)
+        {
+                std::string errormsg = "Texture could not be created.";
+                SDL_LogCritical(SDL_LOG_PRIORITY_CRITICAL, errormsg.c_str());
+                newTexture = NULL;
 
-    }
-    
+        }
+        else
+        {
+            // get image dimensions
+            mWidth = loadedSurface->w;
+            mHeight = loadedSurface->h;
+        }
+
+
     // free old loaded surface
     SDL_FreeSurface(loadedSurface);
+    }
+    
 
     return newTexture;
 
@@ -128,6 +145,14 @@ TTF_Font* Texture::loadFont()
     return font;
 }
 
+void Texture::render()
+{
+    // set rendering space and draw
+    SDL_Rect renderRect = {(int)mPos.x,(int)mPos.y,mWidth,mHeight};
+
+    SDL_RenderCopy(Global::appRenderer, mTexture, NULL, &renderRect);
+}
+
 void Texture::free()
 {
     //get rid of loaded texture and set pointer to NULL
@@ -138,3 +163,4 @@ void Texture::free()
         mWidth = mHeight = 0;
     }
 }
+
