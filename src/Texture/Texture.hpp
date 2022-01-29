@@ -18,6 +18,8 @@ class Texture
 {
 	private:
 
+	int mWidth, mHeight;
+
 	SDL_Texture* mTexture = NULL;
 	TTF_Font* mLoadedFont = NULL;
 	TextFormat mFormat;
@@ -41,7 +43,7 @@ class Texture
 		// initializing from image
 		Texture(std::string& imagePath);
 
-		// destroy texture, surface and loaded resources
+		// destroy texture, surface and FontPointer = NULL
 		~Texture();
 
 		SDL_Texture* loadTexture(TextFormat& formatInfo, std::string& displayText);
