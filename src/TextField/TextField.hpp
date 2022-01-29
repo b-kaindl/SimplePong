@@ -30,22 +30,30 @@ class TextField
 		std::string mDisplayText;
 
 		// surface object to render
-		SDL_Surface* mDisplaySurface;
+		SDL_Surface* mDisplaySurface = NULL;
 
 		// texture object
-		SDL_Texture* mFieldTexture;
+		SDL_Texture* mFieldTexture = NULL;
 
 		// format info
 		TextFormat mFormat;
 
 		// actual font used
-		TTF_Font* mFont;
+		TTF_Font* mFont = NULL;
+
+		// deallocate surface
+		void free();
+		
 
 		// font asset retrieval
 		bool loadFont();
 
 		// load texture from text
 		bool loadTextTexture(std::string text);
+
+		//const screen Viewport
+		SDL_Rect SCREEN = {0,0,Global::SCREEN_WIDTH, Global::SCREEN_HEIGHT};
+
 
 	public:
 

@@ -211,20 +211,18 @@ int main( int argc, char const *argv[] )
 
             // set up text format for scores
             std::string fontPath = "assets/ProcrastinatingPixie-WyVOO.ttf";
-            int fontSize = 24;
+            int fontSize = 64;
             SDL_Color fontColor = { 0, 0, 0 }; 
 
             TextFormat scoreFormat = {fontSize,fontPath,fontColor};
 
             // Score Tiles
-            SDL_Rect leftCorner = {0, 0, Global::SCREEN_WIDTH / 16, Global::SCREEN_HEIGHT / 16};
-            SDL_Rect rightCorner = {Global::SCREEN_WIDTH - (Global::SCREEN_WIDTH / 16), 0, Global::SCREEN_WIDTH / 16, Global::SCREEN_HEIGHT / 16};
+            SDL_Rect leftCorner = {0, 0, Global::SCREEN_WIDTH / 8, Global::SCREEN_HEIGHT / 8};
+            SDL_Rect rightCorner = {Global::SCREEN_WIDTH - (Global::SCREEN_WIDTH / 8), 0, Global::SCREEN_WIDTH / 8, Global::SCREEN_HEIGHT / 8};
             int gameScore [2] = {0,0};
 
-            // TODO: very ugly workaround
-            std::string initString = "0";
-            TextField leftScore = TextField(leftCorner, scoreFormat, initString);
-            TextField rightScore = TextField(rightCorner, scoreFormat, initString);
+            TextField leftScore = TextField(leftCorner, scoreFormat);
+            TextField rightScore = TextField(rightCorner, scoreFormat);
 
             int seed = SDL_GetTicks();
             srand(seed);    // set time-dependent seed everytime on call
@@ -301,6 +299,10 @@ int main( int argc, char const *argv[] )
                     SDL_SetRenderDrawColor( Global::appRenderer, 255, 255, 255, 255 );
                     SDL_RenderClear( Global::appRenderer );
 
+                    leftScore.draw();
+                    
+                    rightScore.draw();
+
                     // restart timer 
                     gameTimer.start();
 
@@ -322,12 +324,7 @@ int main( int argc, char const *argv[] )
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     SDL_RenderDrawLine( Global::appRenderer, Global::SCREEN_WIDTH / 2, 0, Global::SCREEN_WIDTH / 2, Global::SCREEN_HEIGHT );
 
-                    // draw score panels
-	                SDL_RenderSetViewport(Global::appRenderer, &leftCorner);
-                    leftScore.draw();
-                    
-	                SDL_RenderSetViewport(Global::appRenderer, &rightCorner);
-                    rightScore.draw();
+
 
                     // Update screen
                     SDL_RenderPresent( Global::appRenderer );
