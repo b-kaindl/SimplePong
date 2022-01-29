@@ -30,7 +30,9 @@ class Texture
 	// load font from member info
 	TTF_Font* loadFont();
 	
-	void free();
+
+	SDL_Texture* loadTexture(TextFormat& formatInfo, std::string& displayText);
+	SDL_Texture* loadTexture(std::string& imagePath);
 	
 
 
@@ -49,16 +51,17 @@ class Texture
 		// destroy texture, surface and FontPointer = NULL
 		~Texture();
 
+		void free();
 		
-
-		SDL_Texture* loadTexture(TextFormat& formatInfo, std::string& displayText);
-		SDL_Texture* loadTexture(std::string& imagePath);
 
 		Vector2D getPosition();
 		int getWidth();
 		int getHeight();
 
-		
+		void setTexture(TextFormat& formatInfo, std::string& displayText);
+		void setTexture(std::string& imagePath);
+
+		bool Texture::checkTexture();
 		void render();
 
 

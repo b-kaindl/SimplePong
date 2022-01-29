@@ -30,6 +30,7 @@ Texture::~Texture()
 {
     
 	free();
+    TTF_CloseFont(mLoadedFont);
     mLoadedFont = NULL;
 }
 
@@ -164,3 +165,21 @@ void Texture::free()
     }
 }
 
+void Texture::setTexture(TextFormat& formatInfo, std::string& displayText)
+{
+    free();
+
+    mTexture = loadTexture(formatInfo, displayText);
+
+}
+void Texture::setTexture(std::string& imagePath)
+{
+    free();
+
+    mTexture = loadTexture(imagePath);
+}
+
+bool Texture::checkTexture()
+{
+    return mTexture != NULL;
+}

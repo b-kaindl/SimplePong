@@ -14,14 +14,17 @@
 
 // internal includes
 #include "Commons/Commons.hpp"
+#include "Texture/Texture.hpp"
 #include "Utils/TextFormat.hpp"
+#include "Vectors/Vector2d/Vector2d.hpp"
 	
 class TextField  
 {
 	private:
 
 		// Dimensions & Postion
-		int mPosX, mPosY, mWidth, mHeight;
+		Vector2D mPos;
+		int mWidth, mHeight;
 	
 		// Viewport
 		SDL_Rect mViewport;
@@ -29,30 +32,19 @@ class TextField
 		// text to display
 		std::string mDisplayText;
 
-		// surface object to render
-		SDL_Surface* mDisplaySurface = NULL;
-
 		// texture object
-		SDL_Texture* mFieldTexture = NULL;
+		Texture* mFieldTexture = NULL;
 
 		// format info
 		TextFormat mFormat;
 
-		// actual font used
-		TTF_Font* mFont = NULL;
 
-		// deallocate surface
+		// free texture and
 		void free();
 		
 
-		// font asset retrieval
-		bool loadFont();
-
 		// load texture from text
-		bool loadTextTexture(std::string text);
-
-		//const screen Viewport
-		SDL_Rect SCREEN = {0,0,Global::SCREEN_WIDTH, Global::SCREEN_HEIGHT};
+		void loadTextTexture(std::string text);
 
 
 	public:
@@ -66,6 +58,7 @@ class TextField
 		// draw method -> renders texture to screen
 		void draw();
 
+		// change text and update texture
 		void setText(std::string displayText);
 
 		// optional --> update method for format
