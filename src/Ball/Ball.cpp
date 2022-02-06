@@ -83,10 +83,10 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
         reset();
     }
     
-    if( mPosX >= Global::SCREEN_WIDTH + mBallBody.w )  
+    if( mPosX >= Global::SCREEN_WIDTH - mBallBody.w )  
     {
         // set to max X and change direction
-        // add 1 to P2 score
+        // add 1 to P1 score
         mCurrentScore[0] =+ 1;
         reset();
     }
@@ -193,5 +193,10 @@ SDL_Rect& Ball::getBallBody()
 
 int* Ball::getCurrentScore()
 {
-    return mCurrentScore;
+    int* currentScore = new int[2];
+    currentScore[0] = mCurrentScore[0];
+    currentScore[1] = mCurrentScore[1];
+
+
+    return currentScore;
 }

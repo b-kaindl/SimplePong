@@ -1,26 +1,32 @@
 #include "Texture.hpp"  
 	
-Texture::Texture(Vector2D& position)
+Texture::Texture(int x, int y)
 {
-	mPos = position;
+    mPosX = x;
+    mPosY = y;
+    
 
 }
 
-Texture::Texture(Vector2D& position, TextFormat& formatInfo, std::string& displayText)
+Texture::Texture(int x, int y, TTF_Font* font, std::string& displayText)
 {
-    mPos = position;
+    mPosX = x;
+    mPosY = y;
+    mLoadedFont = font;
 
 
-    mFormat = formatInfo;
-    mLoadedFont = loadFont();
-    mTexture = loadTexture(formatInfo,displayText);
+
+    // mFormat = formatInfo;
+    // mLoadedFont = loadFont();
+    mTexture = loadTexture(font,displayText);
 
 }
 
-Texture::Texture(Vector2D& position, std::string& imagePath)
+Texture::Texture(int x, int y, std::string& imagePath)
 {
     
-    mPos = position;
+    mPosX = x;
+    mPosY = y;
     
     mTexture = loadTexture(imagePath);
     
@@ -30,14 +36,15 @@ Texture::~Texture()
 {
     
 	free();
-    TTF_CloseFont(mLoadedFont);
+    // will be handled by owning object
+    // TTF_CloseFont(mLoadedFont);
     mLoadedFont = NULL;
 }
 
 
 
 
-SDL_Texture* Texture::loadTexture(TextFormat& formatInfo, std::string& displayText)
+SDL_Texture* Texture::loadTexture(TTF_Font* font, std::string& displayText)
 {
     free();
     SDL_Texture* newTexture = NULL;
@@ -52,7 +59,7 @@ SDL_Texture* Texture::loadTexture(TextFormat& formatInfo, std::string& displayTe
     {
         // render text surface
         SDL_Surface* txtSurface = TTF_RenderText_Solid(mLoadedFont, displayText.c_str(),
-        formatInfo.color );
+        mFormat.color );
 
         if (txtSurface == NULL)
         {
@@ -65,7 +72,7 @@ SDL_Texture* Texture::loadTexture(TextFormat& formatInfo, std::string& displayTe
             //Create texture from surface pixels
             newTexture = SDL_CreateTextureFromSurface(Global::appRenderer, txtSurface);
 
-            if (txtSurface == NULL)
+            if (newTexture == NULL)
             {
                 std::string errormsg = "Font could not be loaded";
                 SDL_LogCritical(SDL_LOG_PRIORITY_CRITICAL, errormsg.c_str());
@@ -130,26 +137,11 @@ SDL_Texture* Texture::loadTexture(std::string& imagePath)
 
 }
 
-TTF_Font* Texture::loadFont()
-{
-    TTF_Font* font = NULL;
-
-	font = TTF_OpenFont(mFormat.fontPath.c_str(), mFormat.fontSize);
-	if( font == NULL || TTF_WasInit() == 0 ) // TODO: seperate thesse conditions
-	{
-		// could not load font
-        printf( "Font could not be loaded! Error: %s\n", TTF_GetError() );
-        return NULL;
-
-	}
-
-    return font;
-}
 
 void Texture::render()
 {
     // set rendering space and draw
-    SDL_Rect renderRect = {(int)mPos.x,(int)mPos.y,mWidth,mHeight};
+    SDL_Rect renderRect = {mPosX,mPosY,mWidth,mHeight};
 
     SDL_RenderCopy(Global::appRenderer, mTexture, NULL, &renderRect);
 }
@@ -165,16 +157,14 @@ void Texture::free()
     }
 }
 
-void Texture::setTexture(TextFormat& formatInfo, std::string& displayText)
+void Texture::setTexture(TTF_Font* font, std::string& displayText)
 {
-    free();
 
-    mTexture = loadTexture(formatInfo, displayText);
+    mTexture = loadTexture(font, displayText);
 
 }
 void Texture::setTexture(std::string& imagePath)
 {
-    free();
 
     mTexture = loadTexture(imagePath);
 }
@@ -182,4 +172,16 @@ void Texture::setTexture(std::string& imagePath)
 bool Texture::checkTexture()
 {
     return mTexture != NULL;
+}
+
+int Texture::getWidth(){
+    return mWidth;
+}
+
+int Texture::getHeight(){
+    return mHeight;
+}
+
+TTF_Font* Texture::getFont(){
+    return mLoadedFont;
 }

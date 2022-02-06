@@ -19,19 +19,17 @@ class Texture
 {
 	private:
 
-	Vector2D mPos;
-
+	int mPosX,mPosY;
 	int mWidth, mHeight;
 
 	SDL_Texture* mTexture = NULL;
 	TTF_Font* mLoadedFont = NULL;
 	TextFormat mFormat;
 
-	// load font from member info
-	TTF_Font* loadFont();
+
 	
 
-	SDL_Texture* loadTexture(TextFormat& formatInfo, std::string& displayText);
+	SDL_Texture* loadTexture(TTF_Font* font, std::string& displayText);
 	SDL_Texture* loadTexture(std::string& imagePath);
 	
 
@@ -40,13 +38,13 @@ class Texture
 	public:
 		
 		// initialize empty texture --> if texture is to be set via setters
-		Texture(Vector2D& position);
+		Texture(int x, int y);
 
 		// initialize texture from font info
-		Texture(Vector2D& position, TextFormat& formatInfo, std::string& displayText);
+		Texture(int x, int y, TTF_Font* font, std::string& displayText);
 
 		// initializing from image
-		Texture(Vector2D& position, std::string& imagePath);
+		Texture(int x, int y, std::string& imagePath);
 
 		// destroy texture, surface and FontPointer = NULL
 		~Texture();
@@ -58,11 +56,14 @@ class Texture
 		int getWidth();
 		int getHeight();
 
-		void setTexture(TextFormat& formatInfo, std::string& displayText);
+		void setTexture(TTF_Font* font, std::string& displayText);
 		void setTexture(std::string& imagePath);
 
-		bool Texture::checkTexture();
+		bool checkTexture();
 		void render();
+
+		
+		TTF_Font* getFont();
 
 
 };

@@ -23,7 +23,7 @@ class TextField
 	private:
 
 		// Dimensions & Postion
-		Vector2D mPos;
+		int x, y;
 		int mWidth, mHeight;
 	
 		// Viewport
@@ -38,6 +38,8 @@ class TextField
 		// format info
 		TextFormat mFormat;
 
+		TTF_Font* mLoadedFont;
+
 
 		// free texture and
 		void free();
@@ -45,6 +47,9 @@ class TextField
 
 		// load texture from text
 		void loadTextTexture(std::string text);
+
+		// load font from member info
+		TTF_Font* loadFont();
 
 
 	public:

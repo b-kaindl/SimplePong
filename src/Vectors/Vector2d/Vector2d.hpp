@@ -37,8 +37,8 @@ struct Vector2D
 
     Vector2D& operator =(const Vector2D& v)
     {
-        x -= v.x;
-        y -= v.y;
+        x = v.x;
+        y = v.y;
         return (*this);
     }
 
