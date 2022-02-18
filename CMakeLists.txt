@@ -38,7 +38,7 @@ set( CXX_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/Ball/Ball.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Collider/Collider.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Timer/Timer.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/src/pTexture/pTexture.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/PTexture/PTexture.cpp
 
 )
 
