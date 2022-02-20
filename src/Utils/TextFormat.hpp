@@ -2,13 +2,14 @@
 #define TEXTFORMAT_H_
 #include<string>
 #include<SDL2/SDL.h>
+#include<SDL2/SDL_ttf.h>
+
 
 
 
 struct TextFormat
 {
-	int fontSize;
-	std::string fontPath ;
+	TTF_Font* font;
 	SDL_Color color;
 };
 	

@@ -2,6 +2,9 @@
 
 Ball::Ball(int x, int y)
 {
+    // score counter
+	
+
     //Initialize position
 	mPosX = x;
     mPosY = y;
@@ -34,6 +37,7 @@ Ball::Ball(int x, int y)
 
     // go in straight line
     mVelY = 0;
+
 
 }
 
@@ -79,7 +83,7 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     if( mPosX <= 0 )
     {
         // add 1 to P2 score
-        mCurrentScore[1] =+ 1;
+        mCurrentScore[1]++;
         reset();
     }
     
@@ -87,7 +91,7 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     {
         // set to max X and change direction
         // add 1 to P1 score
-        mCurrentScore[0] =+ 1;
+        mCurrentScore[0]++;
         reset();
     }
 
@@ -191,12 +195,8 @@ SDL_Rect& Ball::getBallBody()
     return mBallBody;
 }
 
-int* Ball::getCurrentScore()
+Vector2D Ball::getCurrentScore()
 {
-    int* currentScore = new int[2];
-    currentScore[0] = mCurrentScore[0];
-    currentScore[1] = mCurrentScore[1];
-
-
+    Vector2D currentScore = {mCurrentScore[0], mCurrentScore[1]};
     return currentScore;
 }

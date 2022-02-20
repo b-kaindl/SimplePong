@@ -17,8 +17,5 @@ class Global
 		static SDL_Window* appWindow;
 		static SDL_Renderer* appRenderer;
 		static TTF_Font* appFont;
-
-		
-
 };
 #endif

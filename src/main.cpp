@@ -22,7 +22,6 @@
 #include "TextField/TextField.hpp"
 #include "Utils/TextFormat.hpp"
 #include "Vectors/Vector2d/Vector2d.hpp"
-
 #include "PTexture/PTexture.hpp"
 
 
@@ -99,7 +98,7 @@ bool loadResources()
 {
     bool success = true;
 
-    Global::appFont = TTF_OpenFont( "assets/Depot.ttf", 26 );
+    Global::appFont = TTF_OpenFont( "assets/Depot.ttf", 32 );
     if( Global::appFont == NULL )
     {
         // could not load font
@@ -164,20 +163,20 @@ int main( int argc, char const *argv[] )
             Ball ball;
 
             // set up text format for scores
-            std::string fontPath = "assets/ProcrastinatingPixie-WyVOO.ttf";
-            int fontSize = 26;
             SDL_Color fontColor = { 0, 0, 0, 255 }; 
 
-            TextFormat scoreFormat = {fontSize,fontPath,fontColor};
+            TextFormat scoreFormat = {Global::appFont,fontColor};
 
             // Score Tiles
-            SDL_Rect leftCorner = {0, 0, Global::SCREEN_WIDTH / 8, Global::SCREEN_HEIGHT / 8};
-            SDL_Rect rightCorner = {Global::SCREEN_WIDTH - (Global::SCREEN_WIDTH / 8), 0, (Global::SCREEN_WIDTH / 8), (Global::SCREEN_HEIGHT / 8)};
-            int* gameScore = ball.getCurrentScore();
+            Vector2D leftCorner = {0, 0};
+            int gameScore[2] = {0,0};
 
-            TextField leftScore = TextField(leftCorner, scoreFormat, "0");
-        
-            TextField rightScore = TextField(rightCorner, scoreFormat, "0");
+            TextField leftScore = TextField(leftCorner.x,leftCorner.y, scoreFormat, "0");
+
+            //HACK: use width from leftScore to correctly position rightCorner - there are surely better ways
+            Vector2D rightCorner = {(Global::SCREEN_WIDTH - leftScore.getWidth()), 0};
+
+            TextField rightScore = TextField(rightCorner.x, rightCorner.y, scoreFormat, "0");
             
 
             int seed = SDL_GetTicks();
@@ -225,7 +224,7 @@ int main( int argc, char const *argv[] )
                     // calculate time step in secs
                     float timeStep = gameTimer.getTicks() / 1000.0f;
 
-                    int* newScore = ball.getCurrentScore();
+                    Vector2D newScore = ball.getCurrentScore();
                     std::stringstream scoreText;
 
                     // move game forward
@@ -235,22 +234,22 @@ int main( int argc, char const *argv[] )
                     
                     // compare scores
             
-                    if ( newScore[0] != gameScore[0] )
+                    if ( newScore.x != gameScore[0] )
                     {
                         std::string newDisplayText;
 
-                        gameScore[0] = newScore[0];
+                        gameScore[0] = newScore.x;
 
                         scoreText.flush();
                         scoreText << gameScore[0];
                         leftScore.setText(scoreText.str());
                     }
 
-                    if( newScore[1] != gameScore[1] )
+                    if( newScore.y != gameScore[1] )
                     {
                         std::string newDisplayText;
 
-                        gameScore[1] = newScore[1];
+                        gameScore[1] = newScore.y;
 
                         scoreText.flush();
                         scoreText << gameScore[1];

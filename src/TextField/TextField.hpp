@@ -14,7 +14,7 @@
 
 // internal includes
 #include "Commons/Commons.hpp"
-#include "Texture/Texture.hpp"
+#include "PTexture/PTexture.hpp"
 #include "Utils/TextFormat.hpp"
 #include "Vectors/Vector2d/Vector2d.hpp"
 	
@@ -33,29 +33,23 @@ class TextField
 		std::string mDisplayText;
 
 		// texture object
-		Texture* mFieldTexture = NULL;
+		PTexture* mFieldTexture;
 
 		// format info
 		TextFormat mFormat;
-
-		TTF_Font* mLoadedFont;
-
-
-		// free texture and
-		void free();
-		
+	
 
 		// load texture from text
-		void loadTextTexture(std::string text);
+		void updateTextTexture(std::string text);
 
-		// load font from member info
-		TTF_Font* loadFont();
+
+
 
 
 	public:
 
 		// constructor
-		TextField(SDL_Rect& fieldRect, TextFormat& fieldFormat, std::string displayText="x");
+		TextField(int x, int y, TextFormat& fieldFormat, std::string displayText="x");
 
 		// destructor
 		~TextField();
@@ -66,7 +60,9 @@ class TextField
 		// change text and update texture
 		void setText(std::string displayText);
 
-		// optional --> update method for format
+		// get width and height
+		int getWidth();
+		int getHeight();
 		
 
 };
