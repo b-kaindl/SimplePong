@@ -7,6 +7,7 @@
 #include<random>
 #include "Commons/Commons.hpp"
 #include "Collider/Collider.hpp"
+#include "Vectors/Vector2d/Vector2d.hpp"
 
 
 class Ball  
@@ -41,6 +42,8 @@ class Ball
 		void reset();
 
 		SDL_Rect& getBallBody();
+
+		Vector2D getCurrentScore();
 		
 
 	private:
@@ -57,8 +60,13 @@ class Ball
 		// current velocity
 		float mVelX, mVelY;
 
+		// current game score
+		int mCurrentScore[2] = {0,0};
+
+
 		// max velocity
 		const int BALL_VEL = 400;
+
 
 
 };

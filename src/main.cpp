@@ -3,21 +3,25 @@
 // Main function - will be run at program start
 
 
-// imports 
+// includes 
 
 #include<stdio.h>
 #include<string>
+#include<sstream>
 
 // SDL2
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL_ttf.h>
 
-// internal imports
+// internal includes
 #include "Commons/Commons.hpp"
 #include "Paddle/Paddle.hpp"
 #include "Ball/Ball.hpp"
 #include "Timer/Timer.hpp"
+#include "TextField/TextField.hpp"
+#include "Utils/TextFormat.hpp"
+#include "Vectors/Vector2d/Vector2d.hpp"
 #include "PTexture/PTexture.hpp"
 
 
@@ -62,7 +66,7 @@ bool init()
        else
        {
            // Initialize renderer
-           Global::appRenderer = SDL_CreateRenderer( Global::appWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+           Global::appRenderer = SDL_CreateRenderer( Global::appWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
            if( Global::appRenderer == NULL )
            {
                 // could not create renderer
@@ -94,7 +98,7 @@ bool loadResources()
 {
     bool success = true;
 
-    Global::appFont = TTF_OpenFont( "assets/Depot.ttf", 26 );
+    Global::appFont = TTF_OpenFont( "assets/Depot.ttf", 32 );
     if( Global::appFont == NULL )
     {
         // could not load font
@@ -158,6 +162,23 @@ int main( int argc, char const *argv[] )
             // Ball
             Ball ball;
 
+            // set up text format for scores
+            SDL_Color fontColor = { 0, 0, 0, 255 }; 
+
+            TextFormat scoreFormat = {Global::appFont,fontColor};
+
+            // Score Tiles
+            Vector2D leftCorner = {0, 0};
+            int gameScore[2] = {0,0};
+
+            TextField leftScore = TextField(leftCorner.x,leftCorner.y, scoreFormat, "0");
+
+            //HACK: use width from leftScore to correctly position rightCorner - there are surely better ways
+            Vector2D rightCorner = {(Global::SCREEN_WIDTH - leftScore.getWidth()), 0};
+
+            TextField rightScore = TextField(rightCorner.x, rightCorner.y, scoreFormat, "0");
+            
+
             int seed = SDL_GetTicks();
             srand(seed);    // set time-dependent seed everytime on call
 
@@ -203,13 +224,46 @@ int main( int argc, char const *argv[] )
                     // calculate time step in secs
                     float timeStep = gameTimer.getTicks() / 1000.0f;
 
+                    Vector2D newScore = ball.getCurrentScore();
+                    std::stringstream scoreText;
+
+                    // move game forward
                     ball.move(playerPaddle.getPaddleBody(), enemyPaddle.getPaddleBody(), timeStep);
                     playerPaddle.move(ball, timeStep);
                     enemyPaddle.move(ball, timeStep);
+                    
+                    // compare scores
+            
+                    if ( newScore.x != gameScore[0] )
+                    {
+                        std::string newDisplayText;
+
+                        gameScore[0] = newScore.x;
+
+                        scoreText.flush();
+                        scoreText << gameScore[0];
+                        leftScore.setText(scoreText.str());
+                    }
+
+                    if( newScore.y != gameScore[1] )
+                    {
+                        std::string newDisplayText;
+
+                        gameScore[1] = newScore.y;
+
+                        scoreText.flush();
+                        scoreText << gameScore[1];
+                        rightScore.setText(scoreText.str());
+
+                    }
+                    
+
+
 
                     // clear screen
                     SDL_SetRenderDrawColor( Global::appRenderer, 255, 255, 255, 255 );
                     SDL_RenderClear( Global::appRenderer );
+
 
                     // restart timer 
                     gameTimer.start();
@@ -223,6 +277,8 @@ int main( int argc, char const *argv[] )
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     enemyPaddle.draw();
 
+
+
                     // render ball
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     ball.draw();
@@ -230,10 +286,17 @@ int main( int argc, char const *argv[] )
                     // render midline
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     SDL_RenderDrawLine( Global::appRenderer, Global::SCREEN_WIDTH / 2, 0, Global::SCREEN_WIDTH / 2, Global::SCREEN_HEIGHT );
+
+
+
+                    leftScore.draw();
                     
+                    rightScore.draw();
 
                     // Update screen
                     SDL_RenderPresent( Global::appRenderer );
+
+                    SDL_UpdateWindowSurface( Global::appWindow);
                 
             }
         }

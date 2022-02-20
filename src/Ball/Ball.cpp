@@ -2,6 +2,9 @@
 
 Ball::Ball(int x, int y)
 {
+    // score counter
+	
+
     //Initialize position
 	mPosX = x;
     mPosY = y;
@@ -34,6 +37,7 @@ Ball::Ball(int x, int y)
 
     // go in straight line
     mVelY = 0;
+
 
 }
 
@@ -78,12 +82,16 @@ void Ball::move(SDL_Rect& a, SDL_Rect& b, float deltaTime)
     // TODO: will later become lose condtion
     if( mPosX <= 0 )
     {
-       reset();
+        // add 1 to P2 score
+        mCurrentScore[1]++;
+        reset();
     }
     
-    if( mPosX >= Global::SCREEN_WIDTH + mBallBody.w )  
+    if( mPosX >= Global::SCREEN_WIDTH - mBallBody.w )  
     {
         // set to max X and change direction
+        // add 1 to P1 score
+        mCurrentScore[0]++;
         reset();
     }
 
@@ -185,4 +193,10 @@ void Ball::reset()
 SDL_Rect& Ball::getBallBody() 
 {
     return mBallBody;
+}
+
+Vector2D Ball::getCurrentScore()
+{
+    Vector2D currentScore = {mCurrentScore[0], mCurrentScore[1]};
+    return currentScore;
 }
