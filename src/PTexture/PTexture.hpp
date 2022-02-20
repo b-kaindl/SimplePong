@@ -17,16 +17,13 @@ class PTexture
 	private:
 
 	// position and dimensions
-	int mWidth,mHeight;
+	int mWidth, mHeight;
 
 	// actual hardware texture
 	SDL_Texture* mTexture;
 
 	// Frees Texture
 	void free();
-
-	
-
 
 	
 
@@ -37,6 +34,9 @@ class PTexture
 
 		// loads image from file
 		bool loadFromFile( std::string filePath );
+		
+		// creates texture from text
+		bool loadFromRenderedText( TTF_Font* font, std::string TextureText, SDL_Color textColor);
 
 		int getWidth();
 		int getHeight();
