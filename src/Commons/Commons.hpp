@@ -5,7 +5,6 @@
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_ttf.h>
 
-
 // global class for variables that haven't been put into their own modules yet
 
 class Global  

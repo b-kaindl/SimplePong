@@ -39,5 +39,4 @@ lib/*
 # Ignore any executables
 bin/*
 
-# ignore working files
 scrapbook.cpp

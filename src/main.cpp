@@ -23,20 +23,17 @@
 #include "Utils/TextFormat.hpp"
 #include "Vectors/Vector2d/Vector2d.hpp"
 
+#include "PTexture/PTexture.hpp"
 
 
 // function prototypes for starting and managing app
 bool init();
 bool loadResources();
 void close();
-SDL_Surface* loadTitleSurface( std::string text, SDL_Color fontColor, TTF_Font* font );
 
 
-// Target Surface
-SDL_Surface* gGameTitleSurface = NULL;
 
-// Title
-SDL_Texture* gGameTitleTexture = NULL;
+
 
 
 
@@ -44,6 +41,9 @@ SDL_Texture* gGameTitleTexture = NULL;
 // Initialize SDL and create window + renderer
 bool init()
 {
+    // for debugging
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+
 
     bool success = true;
 
@@ -99,29 +99,11 @@ bool loadResources()
 {
     bool success = true;
 
-    Global::appFont = TTF_OpenFont( "assets/ProcrastinatingPixie-WyVOO.ttf", 32 );
+    Global::appFont = TTF_OpenFont( "assets/Depot.ttf", 26 );
     if( Global::appFont == NULL )
     {
         // could not load font
         printf( "Font could not be loaded! Error: %s\n", TTF_GetError() );
-        success = false;
-    }
-
-    // load title surface
-    std::string strTitle = "WELCOME TO KAIPONG!";
-    SDL_Color titleColor = { 0, 0, 0, 0};
-    gGameTitleSurface = loadTitleSurface( strTitle, titleColor, Global::appFont );
-    if (gGameTitleSurface == NULL)
-    {
-        printf( "Could not load surface for title!\n" );
-        success = false;
-    }
-
-    // assign title texture
-    gGameTitleTexture = SDL_CreateTextureFromSurface( Global::appRenderer, gGameTitleSurface );
-    if (gGameTitleTexture == NULL)
-    {
-        printf( "Could not make texture for title!\n" );
         success = false;
     }
 
@@ -130,19 +112,6 @@ bool loadResources()
 
 void close() 
 {
-    // free title surface
-    if ( gGameTitleSurface != NULL )
-    {
-        SDL_FreeSurface( gGameTitleSurface );
-        gGameTitleSurface = NULL;
-    }    
-    // free title texture
-    if ( gGameTitleTexture != NULL )
-    {
-        SDL_DestroyTexture( gGameTitleTexture );
-        gGameTitleTexture = NULL;
-    }
-
     // free font
     TTF_CloseFont(Global::appFont);
     Global::appFont = NULL;
@@ -159,23 +128,6 @@ void close()
 
 }
 
-SDL_Surface* loadTitleSurface(std::string text, SDL_Color fontColor, TTF_Font* font) 
-{
-    // final texture 
-    SDL_Texture* titleTexture = NULL;
-    
-    //Set up title surface and texture
-    SDL_Surface* titleSurface = TTF_RenderText_Solid( Global::appFont, text.c_str(), fontColor );
-
-    // surface creation failed
-    if ( titleSurface == NULL )
-    {
-        printf ( "Could not create surface! SDL Error: %s\n", SDL_GetError() );
-    }
-
-    return titleSurface;
-
-}
 
 
 int main( int argc, char const *argv[] )
@@ -235,6 +187,15 @@ int main( int argc, char const *argv[] )
             Timer gameTimer;
             gameTimer.start();
 
+            TTF_Font* scoreFont = Global::appFont;
+            if(scoreFont != NULL)
+            {
+                std::string msg = "Successfully loaded font\n";
+
+             
+               SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, msg.c_str());
+            
+            }
             // While application is running
             while( !quit )
             {
@@ -245,6 +206,7 @@ int main( int argc, char const *argv[] )
                     if( e.type == SDL_QUIT )
                     {
                         quit = true;
+
                     }
                         // handle input
                         playerPaddle.handleEvent( e );
@@ -256,9 +218,9 @@ int main( int argc, char const *argv[] )
                     // int titleWidth = gGameTitleSurface->w;
                     // int titleHeight = gGameTitleSurface->h;
                     // SDL_Rect renderQuad = { Global::SCREEN_WIDTH / 2 - (titleWidth / 2), 0, titleWidth, titleHeight };
-                    // render title>
-                    
-                    SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
+                    // // render title>
+                    // SDL_RenderCopy(Global::appRenderer, gGameTitleTexture, NULL, &renderQuad);
+
 
                     // calculate time step in secs
                     float timeStep = gameTimer.getTicks() / 1000.0f;
@@ -307,7 +269,9 @@ int main( int argc, char const *argv[] )
                     // restart timer 
                     gameTimer.start();
 
+                    
                     enemyPaddle.trackBall(ball, timeStep );
+                    
                     // render paddles
                     SDL_SetRenderDrawColor( Global::appRenderer, 0, 0, 0, 0 );
                     playerPaddle.draw();
@@ -336,7 +300,7 @@ int main( int argc, char const *argv[] )
                     SDL_UpdateWindowSurface( Global::appWindow);
                 
             }
-       }
+        }
     
     close();
 
