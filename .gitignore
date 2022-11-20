@@ -40,3 +40,5 @@ lib/*
 bin/*
 
 scrapbook.cpp
+.vscode
+.vscode/c_cpp_properties.json

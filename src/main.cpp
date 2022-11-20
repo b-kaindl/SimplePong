@@ -1,5 +1,3 @@
-// Copyright Haruto Kaito - 2021
-
 // Main function - will be run at program start
 
 

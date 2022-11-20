@@ -1,10 +1,3 @@
-/*
- * Timer.cpp
- *
- *  Created on: Sep 6, 2021
- *      Author: kaiharuto
- */
-
 #include "Timer.hpp"
 
 Timer::Timer() {

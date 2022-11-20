@@ -1,9 +1,3 @@
-/*
- * Timer.h
- *
- *  Created on: Sep 6, 2021
- *      Author: kaiharuto
- */
 
 #ifndef TIMER_H_
 #define TIMER_H_
